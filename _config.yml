@@ -8,6 +8,8 @@ title: James Burnside
 author_name: James Burnside
 email: mail@jamesburnside.com
 logo_url: https://avatars.githubusercontent.com/u/2684369?v=4
+github_username: jamesburnside
+linkedin_username: jameseburnside
 
 # Site settings
 description: >- # this means to ignore newlines until "baseurl:"
@@ -16,7 +18,6 @@ description: >- # this means to ignore newlines until "baseurl:"
   Google search results) and in your feed.xml site description.
 baseurl: "/" # the subpath of your site, e.g. /blog
 url: "https://jamesburnside.github.io"
-github_username:  jamesburnside
 
 # Site Build
 theme: the-plain

@@ -1,0 +1,30 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+{% if page.title %}
+	<title>{{ page.title }} · {{ site.title }}</title>
+{% else %}
+	<title>{{ site.title }}</title>
+{% endif %}
+
+<meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+
+<!-- favicon -->
+<link rel="icon" sizes="16x16" href="{{ "/assets/favicon/favicon-16x16.png" | prepend: site.baseurl | prepend: site.url }}">
+<link rel="icon" sizes="32x32" href="{{ "/assets/favicon/favicon-32x32.png" | prepend: site.baseurl | prepend: site.url }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ "/assets/favicon/apple-touch-icon.png" | prepend: site.baseurl | prepend: site.url }}">
+<link rel="manifest" href="{{ "/assets/favicon/site.webmanifest" | prepend: site.baseurl | prepend: site.url }}">
+<link rel="mask-icon" href="{{ "/assets/favicon/safari-pinned-tab.svg" | prepend: site.baseurl | prepend: site.url }}" color="#5bbad5">
+<link rel="shortcut icon" href="{{ "/assets/favicon/favicon.ico" | prepend: site.baseurl | prepend: site.url }}">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-config" content="{{ "/assets/favicon/browserconfig.xml" | prepend: site.baseurl | prepend: site.url }}">
+<meta name="theme-color" content="#ffffff">
+
+<link rel="stylesheet" href="{{ "/assets/core.css" | prepend: site.baseurl | prepend: site.url }}">
+<link rel="canonical" href="{{ page.url | prepend: site.baseurl | prepend: site.url }}">
+<link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" />
+
+{% if site.mathjax %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+{% endif %}

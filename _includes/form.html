@@ -1,5 +1,5 @@
 <div class="c-form-box">
-  <form class="c-form" action="{% if site.author-email %}https://formspree.io/{{site.author-email}}{% else %}#{% endif %}" method="POST">
+  <form class="c-form" action="{% if site.formspree-endpoint %}https://formspree.io/{{site.formspree-endpoint}}{% else %}#{% endif %}" method="POST">
     <div class="c-form-bnt__close" data-icon='ei-close' data-size='s'></div>
       <div class="c-form__title">You can contact me!</div>
     <div class="c-form__group">
@@ -19,7 +19,7 @@
       <textarea class="c-form__input" id="form-text" name="text" rows="10" required></textarea>
     </div>
     <div class="c-form__group">
-      <button class="c-btn c-btn--secondary c-btn--big c-btn--shadow" type="submit">Send</button>
+      <button class="c-btn c-btn--primary c-btn--big c-btn--shadow" type="submit">Send</button>
     </div>
   </form>
 </div> <!-- /.c-form-box -->

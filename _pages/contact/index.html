@@ -16,7 +16,7 @@ permalink: /contact/
   </div>
 </header>
 <div class="c-form-box o-opacity">
-  <form class="c-form" action="{% if site.author-email %}https://formspree.io/{{site.author-email}}{% else %}#{% endif %}"
+  <form class="c-form" action="{% if site.formspree-endpoint %}https://formspree.io/{{site.formspree-endpoint}}{% else %}#{% endif %}"
     method="POST">
     <a href="/"><div class="c-form-bnt__close" data-icon='ei-close' data-size='s'></div></a>
     <div class="c-form__title">You can contact me!</div>
@@ -37,7 +37,7 @@ permalink: /contact/
       <textarea class="c-form__input" id="form-text" name="text" rows="10" required></textarea>
     </div>
     <div class="c-form__group">
-      <button class="c-btn c-btn--secondary c-btn--big c-btn--shadow" type="submit">Send</button>
+      <button class="c-btn c-btn--primary c-btn--big c-btn--shadow" type="submit">Send</button>
     </div>
     <input type="hidden" name="_next" value="{{ site.baseurl }}/contact/thanks/" />
   </form>

@@ -101,3 +101,12 @@ $(document).ready(function () {
 
 
 });
+
+  /* =======================
+  // Copy link to clipboard
+  ======================= */
+
+  $('.link-btn').click(function (e) {
+    e.preventDefault();
+    navigator.clipboard.writeText(window.location.href);
+  });

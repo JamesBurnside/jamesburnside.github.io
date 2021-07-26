@@ -9,4 +9,4 @@ description: My running score of ADO vs GitHub.
 image: github-vs-ado.png
 ---
 
-Under writing...
+Currently being written... ✍✍✍

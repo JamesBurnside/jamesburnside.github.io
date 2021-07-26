@@ -6,6 +6,7 @@ tags: [DevOps, GitHub, Jest]
 categories: DevOps
 image: github-x-jest.jpg
 cover-image:
+description: Accepting jest snapshots as part of a GitHub Pull Request.
 ---
 
-Accepting jest snapshots as part of a GitHub Pull Request.
+Currently being written... ✍✍✍

@@ -16,7 +16,7 @@ show-newsletter: # true
 show-suggestions: # true
 
 # Author settings
-author_name:  James Burnside
+author-name:  James Burnside
 author-image: https://avatars.githubusercontent.com/u/2684369?v=4
 author-job:   Software Developer at Microsoft
 author-email: mail@jamesburnside.com

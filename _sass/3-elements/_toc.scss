@@ -2,8 +2,18 @@
 	TABLE OF CONTENTS
 =============== */
 
+#markdown-toc {
+  margin-left: 30px;
+}
+
 // Adding 'Contents' headline to the TOC
+// Make styles match H3
 #markdown-toc::before {
-    content: "Contents";
-    font-weight: bold;
+  content: "Contents";
+  font-size: $font-size-h3;
+  font-family: $heading-font-family;
+  font-weight: $heading-font-weight;
+  line-height: initial;
+  margin-bottom: $base-spacing-unit;
+  margin-left: -30px; // The TOC is auto indented as if it were a list item. Manually aligning it back.
 }

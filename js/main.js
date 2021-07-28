@@ -99,9 +99,6 @@ $(document).ready(function () {
     };
   });
 
-
-});
-
   /* =======================
   // Copy link to clipboard
   ======================= */
@@ -110,3 +107,31 @@ $(document).ready(function () {
     e.preventDefault();
     navigator.clipboard.writeText(window.location.href);
   });
+
+  /* =======================
+  // Copy code to clipboard
+  ======================= */
+
+  // construct code button html element
+  let $copyCodeBtn = $('<div class="code-header"><i class="copy-code-button fas fa-clipboard" aria-label="Copy code to clipboard"></i></div>');
+  $copyCodeBtn.click(function() {
+    const btn = $(this);
+
+    // Copy code block contents to clipboard
+    const codeBlock = btn.parent();
+    const code = codeBlock.text().trim();
+    window.navigator.clipboard.writeText(code);
+
+    // Update icon to indicate click was successful
+    const icon = $(this).children('i');
+    icon.removeClass('fa-clipboard');
+    icon.addClass('fa-check');
+    setTimeout(() => {
+      icon.addClass('fa-clipboard');
+      icon.removeClass('fa-check');
+    }, 1000);
+  });
+
+  // Add copy buttons onto all code blocks
+  $copyCodeBtn.insertBefore($('code').parent().parent());
+});

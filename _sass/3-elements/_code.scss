@@ -4,15 +4,9 @@
 
 code {
   overflow: auto;
-  white-space: pre-wrap;
+  white-space: pre;
   word-wrap: break-word;
   word-break: break-all;
-  font-family: Courier, monospace;
-  font-size: 14px;
-  background-color: #f7f7f7;
-}
-
-p code,
-li code {
-  padding: 3px 5px;
+  font-family: monospace;
+  font-size: 12px;
 }

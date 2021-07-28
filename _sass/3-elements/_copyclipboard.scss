@@ -1,0 +1,19 @@
+/* ===============
+	COPY BTN
+=============== */
+
+.code-header {
+  float: right;
+}
+
+.copy-code-button {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  grid-column-gap: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 8px;
+  color: #444;
+}

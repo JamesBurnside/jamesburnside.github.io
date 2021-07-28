@@ -133,5 +133,13 @@ $(document).ready(function () {
   });
 
   // Add copy buttons onto all code blocks
-  $copyCodeBtn.insertBefore($('code').parent().parent());
+  $copyCodeBtn.insertBefore($('pre > code').parent().parent());
+
+  /* =======================
+  // Extra code snippet formatting
+  ======================= */
+
+  // Add a class to all inline code snippets for better formatting:
+  $('p > code').addClass('inline-code');
+  $('a > code').addClass('inline-code');
 });

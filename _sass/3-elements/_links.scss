@@ -10,5 +10,24 @@ a {
     &:hover {
         color: $link-color-hover;
     }
+}
 
+.fa-twitter {
+  color: $twitter;
+}
+
+.fa-facebook {
+  color: $facebook;
+}
+
+.fa-linkedin {
+  color: $linkedin;
+}
+
+.fa-whatsapp, .fa-whatsapp-square {
+  color: $whatsapp;
+}
+
+.fa-link {
+  color: #aaa
 }

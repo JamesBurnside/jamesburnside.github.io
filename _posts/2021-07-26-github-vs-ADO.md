@@ -9,6 +9,6 @@ description: Having worked extensively with both Azure Dev Ops and GitHub, I hav
 image: github-vs-ado.png
 ---
 
-During my time at Microsoft I have worked extensively with both Azure Dev Ops and GitHub, and I have praise and qualms for both.
+During my time at Microsoft I have worked pretty extensively with both Azure Dev Ops and GitHub, and I have praise and qualms for both.
 
 Currently being written... ✍✍✍

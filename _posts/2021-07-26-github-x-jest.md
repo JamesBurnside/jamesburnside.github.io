@@ -49,8 +49,9 @@ We can use the [GitHub comment trigger API](https://docs.github.com/en/actions/r
 
 Here is the final yml which we will breakdown in the next section:
 
-```yml
 {% raw %}
+
+```yml
 name: Update snapshots
 
 on:
@@ -106,8 +107,9 @@ jobs:
           git add *.snap
           git commit -m 'Updating jest snapshots'
           git push
-{% endraw %}
 ```
+
+{% endraw %}
 
 #### Slash command breakdown
 
@@ -122,20 +124,23 @@ on:
 
 Ensure the action only continues if the comment is our slash command `/update-snapshots`:
 
-```yml
 {% raw %}
+
+```yml
 jobs:
   snapshot_slash_command:
     name: Update snapshot slash command
     # This job will only run if the comment matches "update snapshots"
     if: ${{ github.event.comment == 'update snapshots'}}
-{% endraw %}
 ```
+
+{% endraw %}
 
 We are using a machine account personal access token (PAT) when performing the checkout. This is a workaround because GitHub does not, when using the default account, let actions trigger other actions. In our case we want to commit the updated snapshots and have our CI build be kicked off again. To make that happen we commit the changes on behalf of a machine account. This isn't ideal and you can read more about it here, as well as alternative workarounds [here](https://github.com/peter-evans/create-pull-request/issues/48) and [here](https://stackoverflow.com/questions/62750603/github-actions-trigger-another-action-after-one-action-is-completed/65698892#65698892).
 
-```yml
 {% raw %}
+
+```yml
 # Checkout the repo
 - uses: actions/checkout@v2
   with:
@@ -143,8 +148,9 @@ We are using a machine account personal access token (PAT) when performing the c
     # Use a machine account when checking out. This is to workaround the issue were GitHub
     # actions, when using the default account, cannot trigger other actions.
     token: ${{ secrets.MACHINE_ACCOUNT_PAT }}
-{% endraw %}
 ```
+
+{% endraw %}
 
 To have the action be able to update the pull request it needs to hop onto the development branch and update the snapshots from there. Because this action is technically run off the main branch we have to grab the branch name using the GitHub REST API ([related pulls API docs](https://docs.github.com/en/rest/reference/pulls)) and use [`jq`](https://stedolan.github.io/jq/) json parser to get the branch name from the response:
 

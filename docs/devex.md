@@ -19,6 +19,12 @@
    bundle exec jekyll serve
    ```
 
+   To run site with drafts enabled:
+
+   ```bash
+   bundle exec jekyll serve --draft
+   ```
+
 ## Troubleshooting
 
 ### `require': cannot load such file -- webrick

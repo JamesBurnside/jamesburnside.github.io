@@ -2,8 +2,8 @@ import type { GetStaticProps, NextPage } from "next";
 import { getPostsMetadata } from "../lib/getPosts";
 import { SerializedPostMetadata } from "../types/postMetadata";
 import { postMetadataToSerializablePostMetadata } from "../utils/convert";
-import { BlogCard } from "../components/BlogCard";
 import { Container } from "@mui/material";
+import { BlogCardReel } from "../components/BlogCardReel";
 
 type HomeProps = {
   posts: SerializedPostMetadata[];
@@ -12,11 +12,7 @@ type HomeProps = {
 const Home: NextPage<HomeProps> = ({ posts }) => {
   return (
     <Container>
-      {posts.map((metadata) => {
-        return (
-          <BlogCard title={metadata.title} abstract={metadata.abstract} link={`/blog/${metadata.id}`} key={metadata.id} />
-        );
-      })}
+      <BlogCardReel posts={posts} />
     </Container>
   );
 };
@@ -28,8 +24,21 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
     postMetadataToSerializablePostMetadata
   );
   return {
-    props: {
-      posts: postsMetadata,
-    },
+    // props: {
+    //   posts: postsMetadata,
+    // },
+    props: testProps
   };
+};
+
+const testProps: HomeProps = {
+  posts: Array(20).fill([
+    {
+      id: "test",
+      title: "Test",
+      abstract: "Test",
+      dateCreated: "2021-10-01",
+      dateModified: "2021-10-01",
+    }
+  ])
 };

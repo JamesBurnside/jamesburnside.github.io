@@ -30,21 +30,18 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
     postMetadataToSerializablePostMetadata
   );
   return {
-    // props: {
-    //   posts: postsMetadata,
-    // },
-    props: testProps,
+    props: {
+      posts: [...postsMetadata, ...testPosts],
+    },
   };
 };
 
-const testProps: HomeProps = {
-  posts: Array(20).fill({
-    id: "test",
-    title: "Lizard",
-    abstract:
-      "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
-    dateCreated: "2021-10-01",
-    dateModified: "2021-10-01",
-    previewImageLink: "https://picsum.photos/345/140",
-  }),
-};
+const testPosts: SerializedPostMetadata[] = Array(20).fill({
+  id: "test",
+  title: "Lizard",
+  abstract:
+    "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+  dateCreated: "2021-10-01",
+  dateModified: "2021-10-01",
+  previewImageLink: "https://picsum.photos/345/140",
+});

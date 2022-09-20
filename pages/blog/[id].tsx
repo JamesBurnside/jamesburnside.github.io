@@ -1,4 +1,4 @@
-import { getAllPostsPath, getPostData } from "../../lib/getPosts";
+import { getAllPostIds, getPostData } from "../../lib/getPosts";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import { postMetadataToSerializablePostMetadata } from "../../utils/convert";
 import { serialize } from "next-mdx-remote/serialize";
@@ -10,7 +10,7 @@ import Head from "next/head";
 
 const components = {
   TestComponent,
-  code: HighlightedCode
+  code: HighlightedCode,
 };
 
 export const Blog = ({
@@ -33,7 +33,11 @@ export const Blog = ({
 export default Blog;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = getAllPostsPath();
+  const paths = getAllPostIds().map((id) => ({
+    params: {
+      id,
+    },
+  }));
   return {
     paths,
     fallback: false,

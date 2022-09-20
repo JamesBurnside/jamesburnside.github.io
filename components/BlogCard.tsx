@@ -7,14 +7,13 @@ import { CardActionArea } from "@mui/material";
 import Link from "next/link";
 
 type BlogCardProps = {
-  title?: string;
-  abstract?: string;
-  imageLink?: string;
-  imageAlt?: string;
-  link?: string;
+  title: string;
+  abstract: string;
+  imageLink: string;
+  link: string;
 };
 
-export const BlogCard = ({ title, abstract, link, imageLink, imageAlt }: BlogCardProps) => {
+export const BlogCard = ({ title, abstract, link, imageLink }: BlogCardProps) => {
   return (
     <Link href={link ?? ''}>
       <Card sx={{ maxWidth: 345 }}>
@@ -23,15 +22,14 @@ export const BlogCard = ({ title, abstract, link, imageLink, imageAlt }: BlogCar
             component="img"
             height="140"
             image={imageLink}
-            alt={imageAlt}
+            alt={'Blog Card Image'}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-              {title || "Lizard"}
+              {title}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {abstract ||
-                "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"}
+              {abstract}
             </Typography>
           </CardContent>
         </CardActionArea>

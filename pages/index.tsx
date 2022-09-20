@@ -4,6 +4,7 @@ import { SerializedPostMetadata } from "../types/postMetadata";
 import { postMetadataToSerializablePostMetadata } from "../utils/convert";
 import { Container } from "@mui/material";
 import { BlogCardReel } from "../components/BlogCardReel";
+import { Hero } from "../components/Hero";
 
 type HomeProps = {
   posts: SerializedPostMetadata[];
@@ -12,6 +13,7 @@ type HomeProps = {
 const Home: NextPage<HomeProps> = ({ posts }) => {
   return (
     <Container>
+      <Hero />
       <BlogCardReel posts={posts} />
     </Container>
   );
@@ -27,18 +29,18 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
     // props: {
     //   posts: postsMetadata,
     // },
-    props: testProps
+    props: testProps,
   };
 };
 
 const testProps: HomeProps = {
-  posts: Array(20).fill([
-    {
-      id: "test",
-      title: "Test",
-      abstract: "Test",
-      dateCreated: "2021-10-01",
-      dateModified: "2021-10-01",
-    }
-  ])
+  posts: Array(20).fill({
+    id: "test",
+    title: "Lizard",
+    abstract:
+      "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+    dateCreated: "2021-10-01",
+    dateModified: "2021-10-01",
+    previewImageLink: "https://picsum.photos/345/140",
+  }),
 };

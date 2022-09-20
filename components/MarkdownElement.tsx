@@ -43,25 +43,23 @@ const Root = styled("div")(({ theme }) => {
   return {
     ...captionStyles,
     color: theme.palette.text.primary,
-    "& pre": {
+    '& code[class*="language-"]': {
+      // Avoid layout jump after hydration (style injected by prism)
+      ...captionStyles,
       backgroundColor: blueDark[800],
-      direction: "ltr",
-      overflow: "auto",
+      fontFamily: fontFamilyCode,
+      fontWeight: 400,
+      WebkitFontSmoothing: "subpixel-antialiased",
       WebkitOverflowScrolling: "touch", // iOS momentum scrolling.
-      margin: theme.spacing(2, 'auto'),
-      padding: theme.spacing(2),
+      maxHeight: '400px',
       colorScheme: 'dark',
       borderRadius: theme.shape.borderRadius,
       border: '1px solid',
       borderColor: blueDark[700],
-      maxHeight: '400px',
-    },
-    '& code[class*="language-"]': {
-      // Avoid layout jump after hydration (style injected by prism)
-      ...captionStyles,
-      fontFamily: fontFamilyCode,
-      fontWeight: 400,
-      WebkitFontSmoothing: "subpixel-antialiased",
+      margin: theme.spacing(0, 'auto'),
+      padding: theme.spacing(2),
+      direction: "ltr",
+      overflow: "auto",
     },
   };
 });

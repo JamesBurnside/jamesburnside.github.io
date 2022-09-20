@@ -3,16 +3,127 @@ title: Favorite Git Aliases
 abstract: Just a collection of my favorite or most used git aliases
 dateCreated: 2022-09-20
 dateModified: 2022-09-20
-previewImageLink: https://picsum.photos/345/140
-published: false
+previewImageLink: images/git-alias-preview-image.jpeg
+published: true
 ---
 
 # Favorite Git Aliases
 
-A collection of my favorite and most used git aliases
+A collection of my favorite and most used git aliases.
 
-## Aliases
+### A fun joke instead of an annoying typo
 
-### `git config --global alias.co checkout`
+```git
+[alias]
+dad = !curl https://icanhazdadjoke.com/ && git add
+```
 
-`git config --global alias.br branch`
+**Output:**
+
+```sh
+$ git dad .
+> A weasel walks into a bar. The bartender says, "Wow, I've never served a weasel before. What can I get for you?"
+"Pop," goes the weasel
+```
+
+### Push a branch to remote that doesn't exist yet
+
+```git
+[alias]
+pup = !git push --set-upstream origin $(git symbolic-ref --short HEAD)
+```
+
+### Quickly check what the last commit was
+
+```git
+[alias]
+last = log -1 HEAD
+```
+
+### View all the last commits, when they were made and who made them
+
+```git
+[alias]
+ld = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
+```
+
+**Output:**
+
+```sh
+$ git ld
+> 22ecc9b [64 minutes ago] blog card ensure region fills space [James Burnside]
+> 7101e87 [75 minutes ago] Handle draft posts and custom 404 [James Burnside]
+> 55c3cac [1 year, 2 months ago] move unfinished posts to drafts [James Burnside]
+```
+
+### See branches ordered by when they were created
+
+```git
+[alias]
+br = branch --sort=-committerdate
+```
+
+### Productivity Shortcuts
+
+Shortcuts for the standard, oft-used commands:
+
+```git
+[alias]
+  st = status
+  co = checkout
+  cob = checkout -b
+  ci = commit
+  cim = commit -m
+  ca = commit --amend --no-edit
+  cp = cherry-pick
+  pl = pull
+  pu = push
+  fe = fetch --all
+```
+
+### Complete config file
+
+For the above aliases, and other config extras, here's my complete git config file. Be sure to update the [user] section if you wish to copy paste it:
+
+```git
+[user]
+	name = James Burnside
+	email = 2684369+JamesBurnside@users.noreply.github.com
+[alias]
+  st = status
+  dad = !curl https://icanhazdadjoke.com/ && git add
+  br = branch --sort=-committerdate
+  co = checkout
+  cob = checkout -b
+  ci = commit
+  cim = commit -m
+  ca = commit --amend --no-edit
+  cp = cherry-pick
+  pl = pull
+  pu = push
+  pup = !git push --set-upstream origin $(git symbolic-ref --short HEAD)
+  fe = fetch --all
+  last = log -1 HEAD
+  ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+  ld = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
+  ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%ad]%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+[diff]
+	tool = vsdiffmerge
+[difftool]
+	prompt = true
+[core]
+	autocrlf = true
+	editor = code --wait
+	longpaths = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[init]
+	defaultBranch = main
+```

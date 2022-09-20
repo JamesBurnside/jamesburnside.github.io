@@ -12,10 +12,10 @@ const HighlightedCode = (props: any) => {
     copyButtonHidden = true,
     copyButtonProps,
     children: code,
-    language = 'tsx',
     component: Component = MarkdownElement,
     ...other
   } = props;
+  const language = props.className?.replace(/language-/, "") || "";
   const renderedCode = React.useMemo(() => {
     return prism(code.trim(), language);
   }, [code, language]);
@@ -45,13 +45,11 @@ const HighlightedCode = (props: any) => {
   return (
     <Component {...other}>
       <div tabIndex={-1} className="MuiCode-root" {...handlers as any}>
-        <pre>
-          <code
-            className={`language-${language}`}
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{ __html: renderedCode }}
-          />
-        </pre>
+        <code
+          className={`language-${language}`}
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: renderedCode }}
+        />
         {!copyButtonHidden && (
           <button
             {...copyButtonProps}
@@ -79,8 +77,8 @@ HighlightedCode.propTypes = {
   component: PropTypes.elementType,
   copyButtonHidden: PropTypes.bool,
   copyButtonProps: PropTypes.object,
-  language: PropTypes.string,
   sx: PropTypes.object,
+  className: PropTypes.string,
 };
 
 export default HighlightedCode;

@@ -8,12 +8,15 @@ import IconButton from "@mui/material/IconButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
 import Link from "next/link";
+import { useContext } from "react";
+import { ThemeContext } from "../theme/ThemeContext";
+import { useTheme } from "@mui/material";
 
 const HEADER_SIDE_ITEM_WIDTH = 100;
 
 export const Header = () => {
-
-  const [theme, setTheme] = React.useState<'dark' | 'light'>('light');
+  const isDarkTheme = useTheme().palette.mode === 'dark';
+  const themeContext = useContext(ThemeContext);
 
   return (
     <Box sx={{ flexGrow: 1 }} role="header">
@@ -23,8 +26,8 @@ export const Header = () => {
             color="primary"
             exclusive
             aria-label="change theme"
-            value={theme}
-            onChange={(_, newTheme) => setTheme(newTheme)}
+            value={isDarkTheme ? 'dark' : 'light'}
+            onChange={(_, newTheme) => themeContext.setTheme(newTheme)}
           >
             <ToggleButton value="dark">Dark</ToggleButton>
             <ToggleButton value="light">Light</ToggleButton>
@@ -40,12 +43,16 @@ export const Header = () => {
           <Link href="/">James Burnside</Link>
         </Typography>
         <Box textAlign="end" sx={{ width: HEADER_SIDE_ITEM_WIDTH }}>
-          <IconButton>
-            <LinkedInIcon />
-          </IconButton>
-          <IconButton>
-            <GitHubIcon />
-          </IconButton>
+          <a href="https://github.com/JamesBurnside" target="_blank" rel="noreferrer">
+            <IconButton>
+              <GitHubIcon />
+            </IconButton>
+          </a>
+          <a href="https://www.linkedin.com/in/jameseburnside/" target="_blank" rel="noreferrer">
+            <IconButton>
+              <LinkedInIcon />
+            </IconButton>
+          </a>
         </Box>
       </Toolbar>
     </Box>

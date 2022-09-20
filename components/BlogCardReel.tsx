@@ -18,13 +18,13 @@ export const BlogCardReel = ({ posts }: BlogCardReelProps): JSX.Element => {
           mt={2}
           justifyContent="center"
         >
-          {group.map((post) => (
+          {group.map((post, j) => (
             <BlogCard
               title={post.title}
               abstract={post.abstract}
               link={`/blog/${post.id}`}
               imageLink={post.previewImageLink}
-              key={post.id}
+              key={`post.id${i}${j}`}
             />
           ))}
         </Stack>

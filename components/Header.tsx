@@ -13,13 +13,14 @@ import { ThemeContext } from "../theme/ThemeContext";
 import { useTheme } from "@mui/material";
 
 const HEADER_SIDE_ITEM_WIDTH = 100;
+export const HEADER_HEIGHT_REM = 4;
 
 export const Header = () => {
   const isDarkTheme = useTheme().palette.mode === 'dark';
   const themeContext = useContext(ThemeContext);
 
   return (
-    <Box sx={{ flexGrow: 1 }} role="header">
+    <Box sx={{ flexGrow: 1, height: `${HEADER_HEIGHT_REM}rem` }} role="header">
       <Toolbar sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Box textAlign="start" sx={{ width: HEADER_SIDE_ITEM_WIDTH }}>
           <ToggleButtonGroup

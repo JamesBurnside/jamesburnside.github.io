@@ -26,13 +26,15 @@ function MyApp({ Component, pageProps }: AppProps) {
     setTheme
   }), [setTheme]);
 
+  const is404 = Component.displayName === '404';
+
   return (
     <ThemeContext.Provider value={themeContextValue}>
       <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
         <CssBaseline />
-        <Header />
+        {!is404 && <Header />}
         <Component {...pageProps} />
-        <Footer />
+        {!is404 && <Footer />}
       </ThemeProvider>
     </ThemeContext.Provider>
   );

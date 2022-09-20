@@ -4,14 +4,19 @@ import { postMetadataToSerializablePostMetadata } from "../../utils/convert";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
 import { TestComponent } from "../../components/testComponent";
-import { Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import HighlightedCode from "../../components/HighlightedCode";
 import Head from "next/head";
+import { HEADER_HEIGHT_REM } from "../../components/Header";
+import { FOOTER_HEIGHT_REM, FOOTER_MARGIN_TOP_REM } from "../../components/Footer";
 
 const components = {
   TestComponent,
   code: HighlightedCode,
 };
+
+const H1_MARGIN_TOP_REM = 2;
+const MIN_BODY_HEIGHT_REDUCTIONS = HEADER_HEIGHT_REM+FOOTER_HEIGHT_REM+FOOTER_MARGIN_TOP_REM+H1_MARGIN_TOP_REM;
 
 export const Blog = ({
   postMetadata,
@@ -22,10 +27,9 @@ export const Blog = ({
       <Head>
         <title>{`${postMetadata.title} | jamesburnside.github.io`}</title>
       </Head>
-      {/* <div className="blog-metadata">{postMetadata}</div> */}
-      <div className="blog-content">
+      <Box sx={{ minHeight: `calc(100vh - ${MIN_BODY_HEIGHT_REDUCTIONS}rem)` }} className="blog-content">
         <MDXRemote {...postContent} components={components} />
-      </div>
+      </Box>
     </Container>
   );
 };

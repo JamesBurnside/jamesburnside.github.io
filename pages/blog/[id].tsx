@@ -6,6 +6,7 @@ import { MDXRemote } from "next-mdx-remote";
 import { TestComponent } from "../../components/testComponent";
 import { Container } from "@mui/material";
 import HighlightedCode from "../../components/HighlightedCode";
+import Head from "next/head";
 
 const components = {
   TestComponent,
@@ -18,6 +19,9 @@ export const Blog = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Container>
+      <Head>
+        <title>{`${postMetadata.title} | jamesburnside.github.io`}</title>
+      </Head>
       {/* <div className="blog-metadata">{postMetadata}</div> */}
       <div className="blog-content">
         <MDXRemote {...postContent} components={components} />

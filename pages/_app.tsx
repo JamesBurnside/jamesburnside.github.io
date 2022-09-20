@@ -5,6 +5,7 @@ import { createTheme, CssBaseline, ThemeProvider, useMediaQuery } from "@mui/mat
 import { useMemo, useState } from "react";
 import { ThemeContext } from "../theme/ThemeContext";
 import { useCallback } from "react";
+import { Footer } from "../components/Footer";
 
 const darkTheme = createTheme({
   palette: {
@@ -31,6 +32,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <CssBaseline />
         <Header />
         <Component {...pageProps} />
+        <Footer />
       </ThemeProvider>
     </ThemeContext.Provider>
   );

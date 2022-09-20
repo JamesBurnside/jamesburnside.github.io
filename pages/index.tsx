@@ -5,6 +5,7 @@ import { postMetadataToSerializablePostMetadata } from "../utils/convert";
 import { Container } from "@mui/material";
 import { BlogCardReel } from "../components/BlogCardReel";
 import { Hero } from "../components/Hero";
+import Head from "next/head";
 
 type HomeProps = {
   posts: SerializedPostMetadata[];
@@ -13,6 +14,9 @@ type HomeProps = {
 const Home: NextPage<HomeProps> = ({ posts }) => {
   return (
     <Container>
+      <Head>
+        <title>{`Home | jamesburnside.github.io`}</title>
+      </Head>
       <Hero />
       <BlogCardReel posts={posts} />
     </Container>

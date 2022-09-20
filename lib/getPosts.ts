@@ -6,8 +6,11 @@ import type { ParsedPostData, PostMetadata } from "../types/postMetadata";
 const POSTS_DIR = path.join(process.cwd(), "posts");
 const MDX_FILE_EXTENSION = ".mdx";
 
-const shouldReturnDrafts = (draftsAllowed: boolean = false) => process.env.NODE_ENV === "development" || draftsAllowed;
-
+const isPublished = (postMetadata: PostMetadata, draftsAllowed: boolean = false) =>
+  process.env.NODE_ENV === "development" ||
+  draftsAllowed ||
+  postMetadata.published === true ||
+  postMetadata.id === 'test';
 const getFileId = (parsedFile: path.ParsedPath): string => parsedFile.name;
 const isMarkdownFile = (parsedFile: path.ParsedPath): boolean => parsedFile.ext == MDX_FILE_EXTENSION;
 const getAllFilesInDirectory = (postsDirectory: string): path.ParsedPath[] => fs.readdirSync(postsDirectory).map(path.parse);
@@ -27,7 +30,9 @@ const getFileContent = (file: path.ParsedPath) => {
 /**
  * Get the Ids of all posts in the posts directory.
  */
-export const getAllPostIds = () => getAllMdxFiles().map(getFileId);
+export const getAllPostIds = (includeDrafts: boolean = false) => getAllMdxFiles()
+  .filter((parsedFile) => isPublished(getFileContent(parsedFile).data, includeDrafts))
+  .map(getFileId);
 
 /**
  * Get the full metadata of all posts in the posts directory.
@@ -36,7 +41,7 @@ export const getAllPostIds = () => getAllMdxFiles().map(getFileId);
 export const getPostsMetadata = (includeDrafts: boolean = false): PostMetadata[] => getAllMdxFiles()
   .map(getFileContent)
   .map((parsedContent) => parsedContent.data)
-  .filter((post) => shouldReturnDrafts(includeDrafts) || post.published === true)
+  .filter((post) => isPublished(post, includeDrafts) && post.id !== 'test')
   .sort((a, b) => b.dateModified.getTime() - a.dateModified.getTime());
 
 /**
@@ -48,7 +53,7 @@ export const getPostData = (id: string, allowDraft: boolean = false): ParsedPost
     throw new Error(`Could not find post with id ${id}`);
   }
   const allContents = getFileContent(file);
-  if (allContents.data.published === false && !shouldReturnDrafts(allowDraft) && !(allContents.data.id === 'test')) {
+  if (!isPublished(allContents.data, allowDraft)) {
     throw new Error(`Post with id ${id} is not published`);
   }
   return {

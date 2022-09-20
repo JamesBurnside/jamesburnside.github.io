@@ -13,16 +13,30 @@ type BlogCardProps = {
   link: string;
 };
 
-export const BlogCard = ({ title, abstract, link, imageLink }: BlogCardProps) => {
+export const BlogCard = ({
+  title,
+  abstract,
+  link,
+  imageLink,
+}: BlogCardProps) => {
   return (
-    <Link href={link ?? ''}>
-      <Card sx={{ maxWidth: 345 }}>
-        <CardActionArea>
+    <Link href={link ?? ""}>
+      <Card sx={{ width: 345 }}>
+        <CardActionArea
+          sx={{
+            height: "100%",
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "flex-start",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          }}
+        >
           <CardMedia
             component="img"
             height="140"
             image={imageLink}
-            alt={'Blog Card Image'}
+            alt={"Blog Card Image"}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">

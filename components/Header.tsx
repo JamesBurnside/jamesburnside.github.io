@@ -28,7 +28,7 @@ export const Header = () => {
             exclusive
             aria-label="change theme"
             value={isDarkTheme ? 'dark' : 'light'}
-            onChange={(_, newTheme) => themeContext.setTheme(newTheme)}
+            onChange={() => {themeContext.setTheme(isDarkTheme ? 'light' : 'dark')}}
           >
             <ToggleButton value="dark">Dark</ToggleButton>
             <ToggleButton value="light">Light</ToggleButton>

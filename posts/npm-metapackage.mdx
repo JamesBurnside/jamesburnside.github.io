@@ -1,0 +1,105 @@
+---
+title: Creating an npm package from sub packages
+abstract: How we created an npm packages made up of sub packages in our monorepo
+dateCreated: 2022-09-21T08:00:00.000Z
+dateModified: 2022-09-21T08:00:00.000Z
+previewImageLink: images/package.jpeg
+published: true
+---
+
+# How we created an npm package from sub packages
+
+## Problem
+
+We decided to create a [monorepo](https://monorepo.tools/) for our frontend library code. Within our monorepo, we created seperate packages for logical splits in our [codebase](https://github.com/Azure/communication-ui-library); components, composites, stateful-clients, common code. However, when release time came around we wanted to be able to publish a single package to [npm](https://www.npmjs.com/) that exported all functionality from our monorepo.
+
+## Solution
+
+A **metapackage**. A package that imports then re-exports functionality from the other packages (from now on I will refer to these sub-packages as **packlets**). While this sounds simple, we ran into a number of friction points.
+
+### Issue: Combining exports from multiple packages
+
+Our build system is non-trivial with a number of build artifacts. We build packlets in a dependency tree order (using [Rush](https://rushjs.io/)) with each packlet generating a CommonJS bundle, an ESM bundle, and an API file. Our task was to ensure the metapackage could produce an output that combined these outputs.
+
+#### 1.1 How to combine packlets
+
+To create the metapackage we do not leverage the build outputs from each individual build but instead have a lone _index.ts_ file that imports and re-exports the exports from each packlet. This means all files are transpiled and bundled twice; once when the packlet is built, and once when the metapackage is built.
+
+```tsx
+/// metapackage index.ts
+
+export * from "../packlet1";
+export * from "../packlet2";
+export * from "../packlet3";
+```
+
+This allowed us to create build artifacts that only contained the exports from the packlets we wanted to export, were treeshaken correctly, and had a single rolled-up API file based on those exports. [Here is our active metapackage index.ts file](https://github.com/Azure/communication-ui-library/blob/main/packages/communication-react/src/index.ts).
+
+#### 1.2 Handling conflicting exports
+
+We ran into an issue where two packlets exported the same thing. For example, two packlets exported a _usePropsFor_ utility function. This meant that when we re-exported the _usePropsFor_ component from the metapackage we would get a conflict. To solve this we had to rename the exports from the packlets. This was a simple change to the packlet's index.ts file.
+
+```tsx
+/// packlet1 index.ts
+export { usePropsFor as useCallingPropsFor } from "./hooks/usePropsFor";
+
+/// packlet2 index.ts
+export { usePropsFor as useChatPropsFor } from "./hooks/usePropsFor";
+```
+
+We ended up [merging these functions into a single API function](https://github.com/Azure/communication-ui-library/blob/0020b07e979b896b72ba4d0ac231f4cc9793ff8f/packages/communication-react/src/mergedHooks.ts#L118) for the metapackage for ease of use, but this was not necessary.
+
+#### 1.3 Handling incorrect downstream imports
+
+Now each package was being bundled and we were generating a correct API file. But one problem existed: the ESM bundle has imports that pointed to internal packlets. For example, the _Call Composite_ composite in the metapackage would import _StartCallButton_ from the component package. This meant that when the metapackage was installed and used, the ESM bundle would fail to resolve the import.
+
+```tsx
+/// metapackage CallComposite/StartCallScreen.tsx
+import { StartCallButton } from "@internal/react-components"; // <-- this import will not resolve correctly in the metapackage ESM bundle
+```
+
+To handle this, we had to rewrite the imports at transpile or bundle time. To do this, we choose to use [_ttypscript_](https://github.com/cevek/ttypescript), a tool that can apply transformations to the code at transpile time, and a plugin [ts-tranform-paths](https://www.npmjs.com/package/@zerollup/ts-transform-paths) that can rewrite imports.
+
+```tsx
+// metapackage tsconfig.json
+{
+  "compilerOptions": {
+    "paths": {
+      "@internal/chat-component-bindings": ["../../chat-component-bindings/src"],
+      "@internal/calling-component-bindings": ["../../calling-component-bindings/src"],
+      "@internal/acs-ui-common": ["../../acs-ui-common/src"],
+      "@internal/calling-stateful-client": ["../../calling-stateful-client/src"],
+      "@internal/chat-stateful-client": ["../../chat-stateful-client/src"],
+      "@internal/react-components": ["../../react-components/src"],
+      "@internal/react-composites": ["../../react-composites/src"]
+    },
+    "plugins": [
+      {
+        "transform": "@zerollup/ts-transform-paths"
+      }
+    ]
+  }
+}
+```
+
+This transformed the import line to instead have a relative path to the correct file in the dist directory:
+
+```tsx
+// Before
+import { StartCallButton } from "@internal/react-components";
+
+// After
+import { StartCallButton } from '../react-components';
+```
+
+## FAQs
+
+### Why not release multiple packages?
+
+- Confusing imports - _Which package contains what I need?_
+- Maintenance - _Maintaing releases of 7+ packages_
+- Ensuring consistency - _Users may use different versions of each package_
+
+### Any Downsides?
+
+- Dependencies - _If a user only wants functionality from one packlet, they will still have to install all dependencies_

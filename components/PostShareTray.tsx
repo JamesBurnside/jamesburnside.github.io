@@ -55,6 +55,7 @@ const ExternalLinkShareButton = (props: {
       TransitionComponent={Zoom}
       title={props.tooltipText}
       placement="top"
+      arrow
     >
       <a
         href={props.shareUrl}
@@ -86,6 +87,7 @@ const CopyToClipboardShareButton = (props: {
         copyToClipboardClicked ? "Copied to clipboard ✅" : props.tooltipText
       }
       placement="top"
+      arrow
     >
       <IconButton
         onClick={() => {

@@ -10,10 +10,12 @@ import Head from "next/head";
 import { HEADER_HEIGHT_REM } from "../../components/Header";
 import { FOOTER_HEIGHT_REM, FOOTER_MARGIN_TOP_REM } from "../../components/Footer";
 import { PostMetadataHeading } from "../../components/PostMetadataHeading";
+import { MarkdownLink } from "../../components/MarkdownLink";
 
 const components = {
   TestComponent,
   code: HighlightedCode,
+  a: MarkdownLink
 };
 
 const H1_MARGIN_TOP_REM = 2;

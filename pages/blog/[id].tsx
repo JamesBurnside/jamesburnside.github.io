@@ -9,6 +9,7 @@ import HighlightedCode from "../../components/HighlightedCode";
 import Head from "next/head";
 import { HEADER_HEIGHT_REM } from "../../components/Header";
 import { FOOTER_HEIGHT_REM, FOOTER_MARGIN_TOP_REM } from "../../components/Footer";
+import { PostMetadataHeading } from "../../components/PostMetadataHeading";
 
 const components = {
   TestComponent,
@@ -28,6 +29,7 @@ export const Blog = ({
         <title>{`${postMetadata.title} | jamesburnside.github.io`}</title>
       </Head>
       <Box sx={{ minHeight: `calc(100vh - ${MIN_BODY_HEIGHT_REDUCTIONS}rem)` }} className="blog-content">
+        <PostMetadataHeading postDate={(new Date(postMetadata.dateModified)).toDateString()} />
         <MDXRemote {...postContent} components={components} />
       </Box>
     </Container>

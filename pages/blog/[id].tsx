@@ -11,11 +11,18 @@ import { HEADER_HEIGHT_REM } from "../../components/Header";
 import { FOOTER_HEIGHT_REM, FOOTER_MARGIN_TOP_REM } from "../../components/Footer";
 import { PostMetadataHeading } from "../../components/PostMetadataHeading";
 import { MarkdownLink } from "../../components/MarkdownLink";
+import { MarkdownH1, MarkdownH2, MarkdownH3, MarkdownH4, MarkdownH5, MarkdownH6 } from "../../components/MarkdownHeadings";
 
 const components = {
   TestComponent,
   code: HighlightedCode,
-  a: MarkdownLink
+  a: MarkdownLink,
+  h1: MarkdownH1,
+  h2: MarkdownH2,
+  h3: MarkdownH3,
+  h4: MarkdownH4,
+  h5: MarkdownH5,
+  h6: MarkdownH6,
 };
 
 const H1_MARGIN_TOP_REM = 2;

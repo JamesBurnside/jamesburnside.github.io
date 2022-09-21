@@ -43,5 +43,5 @@ const testPosts: SerializedPostMetadata[] = Array(7).fill({
     "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
   dateCreated: "2021-10-01",
   dateModified: "2021-10-01",
-  previewImageLink: "https://picsum.photos/345/140",
+  previewImageLink: "images/lizard.jpeg",
 });

@@ -36,7 +36,7 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
   };
 };
 
-const testPosts: SerializedPostMetadata[] = Array(20).fill({
+const testPosts: SerializedPostMetadata[] = Array(7).fill({
   id: "test",
   title: "Lizard",
   abstract:

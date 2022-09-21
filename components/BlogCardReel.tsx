@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { SerializedPostMetadata } from "../types/postMetadata";
 import { BlogCard } from "./BlogCard";
 
@@ -9,27 +9,28 @@ type BlogCardReelProps = {
 export const BlogCardReel = ({ posts }: BlogCardReelProps): JSX.Element => {
   const groupedPosts = groupByN(3, posts);
   return (
-    <>
-      {groupedPosts.map((group, i) => (
-        <Stack
-          direction="row"
-          spacing={2}
-          key={`reelGroup${i}`}
-          mt={2}
-          justifyContent="center"
-        >
-          {group.map((post, j) => (
-            <BlogCard
-              title={post.title}
-              abstract={post.abstract}
-              link={`/blog/${post.id}`}
-              imageLink={post.previewImageLink}
-              key={`post.id${i}${j}`}
-            />
-          ))}
-        </Stack>
-      ))}
-    </>
+    <Box sx={{ textAlign: 'center' }}>
+      <Box sx={{ display: 'inline-block'}}>
+        {groupedPosts.map((group, i) => (
+          <Stack
+            direction="row"
+            spacing={2}
+            key={`reelGroup${i}`}
+            mt={i === 0 ? 0 : 2}
+          >
+            {group.map((post, j) => (
+              <BlogCard
+                title={post.title}
+                abstract={post.abstract}
+                link={`/blog/${post.id}`}
+                imageLink={post.previewImageLink}
+                key={`post.id${i}${j}`}
+              />
+            ))}
+          </Stack>
+        ))}
+      </Box>
+    </Box>
   );
 };
 

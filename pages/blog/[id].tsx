@@ -5,7 +5,7 @@ import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
 import { TestComponent } from "../../components/testComponent";
 import { Box, Container } from "@mui/material";
-import HighlightedCode from "../../components/HighlightedCode";
+import { HighlightedCode } from "../../components/HighlightedCode";
 import Head from "next/head";
 import { HEADER_HEIGHT_REM } from "../../components/Header";
 import { FOOTER_HEIGHT_REM, FOOTER_MARGIN_TOP_REM } from "../../components/Footer";
@@ -15,6 +15,7 @@ import { MarkdownH1, MarkdownH2, MarkdownH3, MarkdownH4, MarkdownH5, MarkdownH6 
 
 const components = {
   TestComponent,
+  pre: (props: any) => <pre>{props.children}</pre>,
   code: HighlightedCode,
   a: MarkdownLink,
   h1: MarkdownH1,

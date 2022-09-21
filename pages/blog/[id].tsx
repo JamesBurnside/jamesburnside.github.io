@@ -3,28 +3,13 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import { postMetadataToSerializablePostMetadata } from "../../utils/convert";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
-import { TestComponent } from "../../components/testComponent";
 import { Box, Container } from "@mui/material";
-import { HighlightedCode } from "../../components/HighlightedCode";
 import Head from "next/head";
 import { HEADER_HEIGHT_REM } from "../../components/Header";
 import { FOOTER_HEIGHT_REM, FOOTER_MARGIN_TOP_REM } from "../../components/Footer";
 import { PostMetadataHeading } from "../../components/PostMetadataHeading";
-import { MarkdownLink } from "../../components/MarkdownLink";
-import { MarkdownH1, MarkdownH2, MarkdownH3, MarkdownH4, MarkdownH5, MarkdownH6 } from "../../components/MarkdownHeadings";
-
-const components = {
-  TestComponent,
-  pre: (props: any) => <pre>{props.children}</pre>,
-  code: HighlightedCode,
-  a: MarkdownLink,
-  h1: MarkdownH1,
-  h2: MarkdownH2,
-  h3: MarkdownH3,
-  h4: MarkdownH4,
-  h5: MarkdownH5,
-  h6: MarkdownH6,
-};
+import remarkGfm from 'remark-gfm';
+import { markdownComponents } from "../../components/MarkdownComponents";
 
 const H1_MARGIN_TOP_REM = 2;
 const MIN_BODY_HEIGHT_REDUCTIONS = HEADER_HEIGHT_REM+FOOTER_HEIGHT_REM+FOOTER_MARGIN_TOP_REM+H1_MARGIN_TOP_REM;
@@ -40,7 +25,7 @@ export const Blog = ({
       </Head>
       <Box sx={{ minHeight: `calc(100vh - ${MIN_BODY_HEIGHT_REDUCTIONS}rem)` }} className="blog-content">
         <PostMetadataHeading postDate={(new Date(postMetadata.dateModified)).toDateString()} />
-        <MDXRemote {...postContent} components={components} />
+        <MDXRemote {...postContent} components={markdownComponents} />
       </Box>
     </Container>
   );
@@ -69,7 +54,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return {
     props: {
       postMetadata: postMetadataToSerializablePostMetadata(postData.metadata),
-      postContent: await serialize(postData.content),
+      postContent: await serialize(postData.content, {
+        mdxOptions: {
+          remarkPlugins: [remarkGfm],
+        }
+      }),
       id: params.id,
     },
   };

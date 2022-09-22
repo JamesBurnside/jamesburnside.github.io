@@ -20,7 +20,7 @@ export const Header = () => {
   const themeContext = useContext(ThemeContext);
 
   return (
-    <Box sx={{ flexGrow: 1, height: `${HEADER_HEIGHT_REM}rem` }} role="header">
+    <Box component="header" sx={{ flexGrow: 1, height: `${HEADER_HEIGHT_REM}rem` }}>
       <Toolbar sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Box textAlign="start" sx={{ width: HEADER_SIDE_ITEM_WIDTH }}>
           <ToggleButtonGroup

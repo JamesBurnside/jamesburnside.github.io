@@ -21,7 +21,7 @@ export const BlogCard = ({
 }: BlogCardProps) => {
   return (
     <Link href={link ?? ""}>
-      <Card sx={{ width: 345 }}>
+      <Card sx={{ maxWidth: '345px', minWidth: '230px', height: '100%' }}>
         <CardActionArea
           sx={{
             height: "100%",

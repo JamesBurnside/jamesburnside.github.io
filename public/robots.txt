@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://jamesburnside.github.io
+
+# Sitemaps
+Sitemap: https://jamesburnside.github.io/sitemap.xml

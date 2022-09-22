@@ -38,6 +38,17 @@ jobs:
         run: yarn install
       - name: Build App
         run: yarn build
+      - name: Check no changes to the sitemap from the build process
+        run: |
+          if [[ -z $(git status public/sitemap* public/robots* -s) ]]
+          then
+            echo "Success, no new sitemap changes found."
+          else
+            echo "Sitemap changes found. Build locally and submit the changes."
+            echo "Changes:"
+            git status public/sitemap* public/robots*
+            exit 1
+          fi
       - name: Bundle App
         run: yarn export
       - name: Setup Pages

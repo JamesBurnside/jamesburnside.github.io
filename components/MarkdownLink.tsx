@@ -1,4 +1,5 @@
 import Tooltip from "@mui/material/Tooltip";
+import Zoom from "@mui/material/Zoom";
 
 export const MarkdownLink = ({
   href,
@@ -8,7 +9,7 @@ export const MarkdownLink = ({
   children: React.ReactNode;
 }) => {
   return (
-    <Tooltip placement="top" title={href} arrow>
+    <Tooltip placement="top" title={href} arrow TransitionComponent={Zoom}>
       <a
         style={{ textDecoration: "underline" }}
         target="_blank"

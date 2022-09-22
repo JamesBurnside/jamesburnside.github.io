@@ -22,6 +22,10 @@ export const Blog = ({
     <Container>
       <Head>
         <title>{`${postMetadata.title} | jamesburnside.github.io`}</title>
+        <meta name="description" content={postMetadata.abstract} />
+        <meta property="og:title" content={postMetadata.title} />
+        <meta property="og:description" content={postMetadata.abstract} />
+        <meta property="og:image" content={postMetadata.previewImage} />
       </Head>
       <Box sx={{ minHeight: `calc(100vh - ${MIN_BODY_HEIGHT_REDUCTIONS}rem)` }} className="blog-content">
         <PostMetadataHeading postDate={(new Date(postMetadata.dateModified)).toDateString()} />

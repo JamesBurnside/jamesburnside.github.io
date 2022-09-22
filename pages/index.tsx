@@ -16,6 +16,10 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
     <Container>
       <Head>
         <title>{`Home | jamesburnside.github.io`}</title>
+        <meta name="description" content="Blogs posts by James Burnside" />
+        <meta property="og:title" content="James Burnside Blog Site" />
+        <meta property="og:description" content="Blog posts by James Burnside" />
+        <meta name="google-site-verification" content="80GAIAWS24DM0Ms_2FRXohAy_cXAVvy3v_QMUs9gYeQ" />
       </Head>
       <Hero />
       <BlogCardReel posts={posts} />
@@ -38,7 +42,7 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
 
 const testPosts: SerializedPostMetadata[] = Array(5).fill({
   id: "test",
-  title: "Lizard",
+  title: "Test Page",
   abstract:
     "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
   dateCreated: "2021-10-01",

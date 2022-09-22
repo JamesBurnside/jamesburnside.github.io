@@ -36,6 +36,8 @@ const CodeStyleWrap = (props: { children: React.ReactNode; isInline: boolean }) 
         backgroundColor: props.isInline ? theme.palette.grey[theme.palette.mode === 'dark' ? 800: 200] : undefined,
         fontFamily: fontFamilyCode,
         fontWeight: 400,
+        padding: theme.spacing(0, 0.4),
+        margin: theme.spacing(0, 0.2),
         '& code[class*="language-"]': {
           // Avoid layout jump after hydration (style injected by prism)
           ...captionStyles,

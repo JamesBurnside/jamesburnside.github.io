@@ -1,0 +1,84 @@
+---
+title: Detecting webcam availability with javascript
+abstract: Checking if the browser has permissions for the camera or if it is in use by another device
+dateCreated: 2022-09-21T10:00:00.000Z
+dateModified: 2022-09-21T10:00:00.000Z
+previewImageLink: images/webcam.jpg
+published: true
+---
+
+# Deep Dive: Detecting webcam availability with javascript
+
+Detecting if the browser can access a camera feed from a local device is trivial, but when it fails understanding _why_ is not an easy task.
+
+## Failure Reasons
+
+In this article we'll explore detecting the following reasons for device failure. This is not an exhaustive list, but it covers the most common reasons:
+
+1. The browsing application does not have permission to access the camera by the OS
+1. The user has denied permission to access the camera
+1. The camera is in use by another device
+
+## Browser APIs
+
+As of writing (_2022-09-21_) there are two APIs that can be used to try understand if an application can access the camera feed of a local device:
+
+- [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API)
+- [MediaDevices.getUserMedia()](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia)
+
+### Permissions API
+
+I should start with saying _(as of 2022-09-21) this only [supported in Safari 16+ and not at all in Firefox](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API#browser_compatibility)_. However, this is a new API that allows the developer to query the user's permissions for a given resource.
+When using this to query `camera` permissions, it _only_ returns a `granted` or `denied` response on whether the user has allowed permissions to the website - it does **not** tell you if the browsing application has been denied permissions by the OS.
+
+#### API Response Matrix
+
+```tsx
+navigator.permissions.query({ name: "camera" });
+```
+
+| Browser                                                                              | System-level Permission Denied | User Denied Site Permission | Camera in use by another application |
+| ------------------------------------------------------------------------------------ | ------------------------------ | --------------------------- | ------------------------------------ |
+| Edge – Windows <br /> <sub><sup>v104.0.5112.81 - Win11</sup></sub>                   | `"granted"`                    | `"denied"`                  | `"granted"`                          |
+| Chrome – Windows <br /> <sub><sup>v104.0.1293.47 - Win 11</sup></sub>                | `"granted"`                    | `"denied"`                  | `"granted"`                          |
+| Firefox – Windows <br /> <sub><sup>v103.0.2 - Win 11</sup></sub>                     | `"API not available"`          | `"API not available"`       | `"API not available"`                |
+| Safari – MacOS <br /> <sub><sup>v15.5 - MacOS v11.6.6</sup></sub>                    | _Cannot be blocked_            | `"API not available"`       | `"API not available"`                |
+| Chrome – MacOS <br /> <sub><sup>v104.0.5112.79 - MacOS v11.6.6</sup></sub>           | `"granted"`                    | `"denied"`                  | `"granted"`                          |
+| Chrome – Android <br /> <sub><sup>v104.0.5112.69 - Android v12 (Pixel 6)</sup></sub> | `"granted"`                    | `"denied"`                  | `"granted"`                          |
+| Safari – iOS <br /> <sub><sup>v15.5 - iOS v15.5 (iPhone SE 2020)</sup></sub>         | `"API not available"`          | `"API not available"`       | `"API not available"`                |
+
+### MediaDevices.getUserMedia()
+
+This is the older API that has been around for a while.
+It is supported in all modern browsers and allows the developer to query the camera feed of a local device by temporarily accessing the camera stream.
+If browser or site does not have permission for the camera, or if the camera is in use by another application, this will throw an error.
+Based on the error thrown, we narrow down the reason for the failure - but not entirely.
+These responses vary per OS and browser, and there is _no gaurantee that the error message will be the same in the future_ - so use this at your own risk and prepare for it to fail in the future.
+
+#### API Response Matrix
+
+```tsx
+navigator.mediaDevices.getUserMedia({ video: true });
+```
+
+| Browser                                                                              | System-level Permission Denied                                                                                                                                                   | User Denied Site Permission                                                                                                                                                      | Camera in use by another application                                                                                 |
+| ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Edge – Windows <br /> <sub><sup>v104.0.5112.81 - Win11</sup></sub>                   | ErrName: `"NotAllowedError"` <br /> ErrMsg: `"Permission denied by system"`                                                                                                      | ErrName: `"NotAllowedError"` <br /> ErrMsg: `"Permission denied"`                                                                                                                | ErrName: `"NotReadableError"` <br /> ErrMsg: `"Could not start video source"`                                        |
+| Chrome – Windows <br /> <sub><sup>v104.0.1293.47 - Win 11</sup></sub>                | ErrName: `"NotAllowedError"` <br /> ErrMsg: `"Permission denied by system"`                                                                                                      | ErrName: `"NotAllowedError"` <br /> ErrMsg: `"Permission denied"`                                                                                                                | ErrName: `"NotReadableError"` <br /> ErrMsg: `"Could not start video source"`                                        |
+| Firefox – Windows <br /> <sub><sup>v103.0.2 - Win 11</sup></sub>                     | ErrName: `"NotReadableError"` <br /> ErrMsg: `"Failed to allocate videosource"`                                                                                                  | ErrName: `"NotAllowedError"` <br /> ErrMsg: `"The request is not allowed by the user agent or the platform in the current context."`                                             | ErrName: `"NotReadableError"` <br /> ErrMsg: `"Failed to allocate videosource"`                                      |
+| Safari – MacOS <br /> <sub><sup>v15.5 - MacOS v11.6.6</sup></sub>                    | _Cannot be blocked_                                                                                                                                                              | ErrName: `"NotAllowedError"` <br /> ErrMsg: `"The request is not allowed by the user agent or the platform in the current context, possibly because the user denied permission"` | _Unable to repoduce, all applications allowed camera access simultaneously_                                          |
+| Chrome – MacOS <br /> <sub><sup>v104.0.5112.79 - MacOS v11.6.6</sup></sub>           | ErrName: `"NotAllowedError"` <br /> ErrMsg: `"Permission denied by system"`                                                                                                      | ErrName: `"NotAllowedError"` <br /> ErrMsg: `"Permission denied by system"`                                                                                                      | _Unable to repoduce, all applications allowed camera access simultaneously_                                          |
+| Chrome – Android <br /> <sub><sup>v104.0.5112.69 - Android v12 (Pixel 6)</sup></sub> | _Always shows popup to update permission._ <br /> ErrName: `"NotAllowedError"` <br /> ErrMsg: `"Permission denied"`                                                              | ErrName: `"NotAllowedError"` <br /> ErrMsg: `"Permission denied"`                                                                                                                | _Unable to repoduce, browser always stole video from the other application_                                          |
+| Safari – iOS <br /> <sub><sup>v15.5 - iOS v15.5 (iPhone SE 2020)</sup></sub>         | ErrName: `"NotAllowedError"` <br /> ErrMsg: `"The request is not allowed by the user agent or the platform in the current context, possibly because the user denied permission"` | ErrName: `"NotAllowedError"` <br /> ErrMsg: `"The request is not allowed by the user agent or the platform in the current context, possibly because the user denied permission"` | _Unable to reproduce, minimizing app causes camera to be lost. Better test would be on an iPadOS with split screen._ |
+
+## Result Summaries
+
+**Windows Chromium** - On these browsers the different permission results returned by getUserMedia coupled with the Permissions API can used to fully determine why the camera and/or microphone was unable to turn on with respect to the three scenarios below. Alternatively, the getUserMedia error message text can also be used but it is not clear if error text is a stable API to rely on. 
+
+**Windows Firefox** - It cannot be discerned if the camera was in use by another application or if the system denied permission to Firefox. 
+
+**MacOS** - On Safari there are no issues as safari cannot be blocked at a system level and multiple apps may use the camera simultaneously. On chrome errors were consistent with Windows but no access to Permissions API until safari v16 so only error message text could be used today. 
+
+**Android** - When blocked at a system level Android always shows a nice popup to approve permissions to chrome - otherwise errors between system denial and user denial are distinguishable by using the Permissions API only. On testing browser always stole camera from another app that was previously using it. 
+
+**iOS Safari** - It cannot be discerned if the user blocked the site access to the mic/camera or if the entire browser was blocked access - when the Permissions API is implemented in ios16 it can be coupled with getUserMedia result to discern this. This test did not cover testing another application using the camera as access to the camera was always stopped when switching the App.

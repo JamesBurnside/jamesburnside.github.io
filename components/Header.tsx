@@ -29,7 +29,7 @@ export const Header = () => {
           align="center"
           sx={{ flex: 1 }}
         >
-          <Link href="/">James Burnside</Link>
+          <Link href="/"><a aria-label="home">James Burnside</a></Link>
         </Typography>
         <Box textAlign="end" sx={{ width: HEADER_SIDE_ITEM_WIDTH }}>
           <SocialHeaderButton

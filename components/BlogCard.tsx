@@ -20,35 +20,37 @@ export const BlogCard = ({
   imageLink,
 }: BlogCardProps) => {
   return (
-    <Link href={link ?? ""} aria-label={`Blog post about ${title}`}>
-      <Card sx={{ maxWidth: '345px', minWidth: '230px', height: '100%' }}>
-        <CardActionArea
-          sx={{
-            height: "100%",
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "flex-start",
-            flexDirection: "column",
-            alignItems: "flex-start",
-          }}
-        >
-          <CardMedia
-            component="img"
-            height="140"
-            image={imageLink}
-            alt={"Blog Card Image"}
-            role="presentation"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {title}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {abstract}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
+    <Link href={link ?? ""} passHref>
+      <a aria-label={`Blog post about ${title}`}>
+        <Card sx={{ maxWidth: '345px', minWidth: '230px', height: '100%' }}>
+          <CardActionArea
+            sx={{
+              height: "100%",
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "flex-start",
+              flexDirection: "column",
+              alignItems: "flex-start",
+            }}
+          >
+            <CardMedia
+              component="img"
+              height="140"
+              image={imageLink}
+              alt={"Blog Card Image"}
+              role="presentation"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                {title}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {abstract}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      </a>
     </Link>
   );
 };

@@ -6,9 +6,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import IconButton from "@mui/material/IconButton";
 import Link from "next/link";
-import { useContext } from "react";
-import { ThemeContext } from "../theme/ThemeContext";
-import { useTheme } from "@mui/material";
+import { Tooltip, Zoom } from "@mui/material";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 
 const HEADER_SIDE_ITEM_WIDTH = 100;
@@ -16,7 +14,10 @@ export const HEADER_HEIGHT_REM = 4;
 
 export const Header = () => {
   return (
-    <Box component="header" sx={{ flexGrow: 1, height: `${HEADER_HEIGHT_REM}rem` }}>
+    <Box
+      component="header"
+      sx={{ flexGrow: 1, height: `${HEADER_HEIGHT_REM}rem` }}
+    >
       <Toolbar sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Box textAlign="start" sx={{ width: HEADER_SIDE_ITEM_WIDTH }}>
           <ThemeSwitcher />
@@ -31,18 +32,47 @@ export const Header = () => {
           <Link href="/">James Burnside</Link>
         </Typography>
         <Box textAlign="end" sx={{ width: HEADER_SIDE_ITEM_WIDTH }}>
-          <a href="https://github.com/JamesBurnside" target="_blank" rel="noreferrer" aria-label="James Burnside GitHub profile">
-            <IconButton component="div" role="presentation" tabIndex={-1}>
-              <GitHubIcon />
-            </IconButton>
-          </a>
-          <a href="https://www.linkedin.com/in/jameseburnside/" target="_blank" rel="noreferrer" aria-label="James Burnside LinkedIn profile">
-            <IconButton component="div" role="presentation" tabIndex={-1}>
-              <LinkedInIcon />
-            </IconButton>
-          </a>
+          <SocialHeaderButton
+            href="https://github.com/JamesBurnside"
+            ariaLabel="James Burnside GitHub profile"
+            tooltipText="Follow me on GitHub"
+          >
+            <GitHubIcon />
+          </SocialHeaderButton>
+          <SocialHeaderButton
+            href="https://www.linkedin.com/in/jameseburnside/"
+            ariaLabel="James Burnside LinkedIn profile"
+            tooltipText="Contact me on LinkedIn"
+          >
+            <LinkedInIcon />
+          </SocialHeaderButton>
         </Box>
       </Toolbar>
     </Box>
   );
 };
+
+const SocialHeaderButton = (props: {
+  href: string;
+  ariaLabel: string;
+  tooltipText: string;
+  children: React.ReactNode;
+}) => (
+  <Tooltip
+    TransitionComponent={Zoom}
+    title={props.tooltipText}
+    placement="bottom"
+    arrow
+  >
+    <a
+      href={props.href}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={props.ariaLabel}
+    >
+      <IconButton component="div" role="presentation" tabIndex={-1}>
+        {props.children}
+      </IconButton>
+    </a>
+  </Tooltip>
+);

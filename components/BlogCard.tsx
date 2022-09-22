@@ -20,7 +20,7 @@ export const BlogCard = ({
   imageLink,
 }: BlogCardProps) => {
   return (
-    <Link href={link ?? ""}>
+    <Link href={link ?? ""} aria-label={`Blog post about ${title}`}>
       <Card sx={{ maxWidth: '345px', minWidth: '230px', height: '100%' }}>
         <CardActionArea
           sx={{
@@ -37,6 +37,7 @@ export const BlogCard = ({
             height="140"
             image={imageLink}
             alt={"Blog Card Image"}
+            role="presentation"
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">

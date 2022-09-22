@@ -31,13 +31,13 @@ export const Header = () => {
           <Link href="/">James Burnside</Link>
         </Typography>
         <Box textAlign="end" sx={{ width: HEADER_SIDE_ITEM_WIDTH }}>
-          <a href="https://github.com/JamesBurnside" target="_blank" rel="noreferrer">
-            <IconButton>
+          <a href="https://github.com/JamesBurnside" target="_blank" rel="noreferrer" aria-label="James Burnside GitHub profile">
+            <IconButton component="div" role="presentation" tabIndex={-1}>
               <GitHubIcon />
             </IconButton>
           </a>
-          <a href="https://www.linkedin.com/in/jameseburnside/" target="_blank" rel="noreferrer">
-            <IconButton>
+          <a href="https://www.linkedin.com/in/jameseburnside/" target="_blank" rel="noreferrer" aria-label="James Burnside LinkedIn profile">
+            <IconButton component="div" role="presentation" tabIndex={-1}>
               <LinkedInIcon />
             </IconButton>
           </a>

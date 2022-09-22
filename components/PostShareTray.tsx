@@ -58,6 +58,7 @@ const ExternalLinkShareButton = (props: {
       arrow
     >
       <a
+        aria-label={props.tooltipText}
         href={props.shareUrl}
         target="popup"
         rel="noreferrer"
@@ -65,7 +66,7 @@ const ExternalLinkShareButton = (props: {
           window.open(props.shareUrl, "name", "width=600,height=400")
         }
       >
-        <IconButton>
+        <IconButton component="div" role="presentation" tabIndex={-1}>
           <props.icon fontSize="small" />
         </IconButton>
       </a>
@@ -80,6 +81,16 @@ const CopyToClipboardShareButton = (props: {
 }) => {
   const [copyToClipboardClicked, setCopyToClipboardClicked] = useState(false);
 
+  const runCopyToClipboard = () => {
+    if (!copyToClipboardClicked) {
+      setCopyToClipboardClicked(true);
+      copy(props.shareUrl);
+      setTimeout(() => {
+        setCopyToClipboardClicked(false);
+      }, 2000);
+    }
+  }
+
   return (
     <Tooltip
       TransitionComponent={Zoom}
@@ -89,19 +100,17 @@ const CopyToClipboardShareButton = (props: {
       placement="top"
       arrow
     >
-      <IconButton
-        onClick={() => {
-          if (!copyToClipboardClicked) {
-            setCopyToClipboardClicked(true);
-            copy(props.shareUrl);
-            setTimeout(() => {
-              setCopyToClipboardClicked(false);
-            }, 2000);
-          }
-        }}
+      <a
+        tabIndex={0}
+        aria-label="Copy article link to clipboard"
+        onClick={runCopyToClipboard}
+        role="button"
+        onKeyDown={(e: any) => e.key === "Enter" && runCopyToClipboard()}
       >
-        <props.icon fontSize="small" />
-      </IconButton>
+        <IconButton component="div" role="presentation" tabIndex={-1}>
+          <props.icon fontSize="small" />
+        </IconButton>
+      </a>
     </Tooltip>
   );
 };

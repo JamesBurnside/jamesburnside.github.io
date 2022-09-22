@@ -19,7 +19,7 @@ export const BlogCardReel = ({ posts }: BlogCardReelProps): JSX.Element => {
 
   return (
     <Box ref={gridContainerRef}>
-      <Grid container spacing={gridSpacing} sx={{ marginLeft: `${gridMargin}px` }}>
+      <Grid container spacing={gridSpacing} sx={{ marginLeft: `${gridMargin}px`, transition: 'margin 0.25s', transitionTimingFunction: 'cubic-bezier(0, 1, 0.5, 1)' }}>
         {posts.map((post, i) => (
           <Grid key={`blogReelPost${i}`} ref={i=== 0 ? gridCardRef : undefined}>
             <BlogCard

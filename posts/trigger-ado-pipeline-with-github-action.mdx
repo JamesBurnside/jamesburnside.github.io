@@ -1,0 +1,38 @@
+---
+title: Trigger ADO Pipeline using GitHub Actions
+abstract: How to use a simple GitHub action to trigger your AzureDevOps pipeline
+dateCreated: 2022-09-21T10:00:00.000Z
+dateModified: 2022-09-21T10:00:00.000Z
+previewImageLink: images/github-key.jpg
+published: true
+---
+
+# How to trigger your AzureDevOps Pipeline using GitHub Actions
+
+For reasons beyond your control you may have a build or release pipeline inside ADO (AzureDevOps) that you want to trigger from GitHub.
+Turns out Azure have already released an action to do just that! You can find it here: [@Azure/pipelines](https://github.com/Azure/pipelines).
+
+## How to use the @Azure/pipelines action
+
+First of all you will need to create a Personal Access Token (PAT) that has permission to trigger your ADO pipeline.
+You can do this by going to azure dev ops organization home page > open user settings > select Personal Access Tokens > click on Generate New Token > select the required permissions > click on Create.
+You will need to grant the token `Release: Read, write, & execute` and/or `Build: Read & execute` permission (depending on whether your pipeline triggers a build or a release).
+For detailed instructions on PATs and how to create one see the official documentation: [Create a personal access token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows#create-a-pat).
+
+Once you have your PAT you need to add this to your GitHub repository secrets. To do this go to your GitHub repository > Settings > Secrets > Actions > Add a new secret. And enter the following:
+- Name: `ADO_PAT`
+- Secret: `<paste your PAT here>`
+
+Then inside your GitHub workflow file you can use the action like this:
+
+```yml
+- name: Trigger ADO pipeline
+  uses: Azure/pipelines@v1.2
+  with:
+    azure-devops-project-url: 'https://dev.azure.com/<org>/<project>' # Replace with your ADO project URL
+    azure-pipeline-name: '<your ado pipeline name>' # Replace with your pipeline name
+    azure-devops-token: '${{ secrets.ADO_PAT }}' # This is the PAT secret you created above
+    azure-pipeline-variables: '{"accessLevel": "public", "<optional-pipeline-variable>": "<variable-value>"}' # These are optional
+```
+
+Simple right? You can find more information about the action here: [@Azure/pipelines](https://github.com/Azure/pipelines).

@@ -16,7 +16,7 @@ export const HighlightedCode = (props: {
 
   return (
     <CodeStyleWrap isInline={!language}>
-      <code
+      <code style={{ maxWidth: '100%'}}
         className={`language${language ? `-${language}` : ""}`}
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: renderedCode }}
@@ -38,6 +38,7 @@ const CodeStyleWrap = (props: { children: React.ReactNode; isInline: boolean }) 
         fontWeight: 400,
         padding: theme.spacing(0, 0.4),
         margin: theme.spacing(0, 0.2),
+        maxWidth: '100%',
         '& code[class*="language-"]': {
           // Avoid layout jump after hydration (style injected by prism)
           ...captionStyles,

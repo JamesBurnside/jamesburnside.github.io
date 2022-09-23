@@ -5,8 +5,9 @@ export type PostMetadata = {
   dateCreated: Date;
   dateModified: Date;
   previewImageLink: string;
-  heroImageLink: string;
+  heroImageLink?: string;
   published: boolean;
+  tags?: string[];
 }
 
 export type SerializedPostMetadata = {
@@ -16,8 +17,9 @@ export type SerializedPostMetadata = {
   dateCreated: string;
   dateModified: string;
   previewImageLink: string;
-  heroImageLink: string;
+  heroImageLink?: string;
   published: boolean;
+  tags?: string[];
 }
 
 export type ParsedPostData = {

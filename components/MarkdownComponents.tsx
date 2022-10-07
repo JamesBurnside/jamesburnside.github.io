@@ -11,6 +11,7 @@ import {
 } from "./MarkdownHeadings";
 import { TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { MarkdownTable } from "./MarkdownTable";
+import { ExampleVideoEffects } from "./ExampleVideoEffects";
 
 export const markdownComponents = {
   TestComponent,
@@ -29,4 +30,5 @@ export const markdownComponents = {
   tbody: TableBody,
   td: TableCell,
   th: TableCell,
+  ExampleVideoEffects
 };

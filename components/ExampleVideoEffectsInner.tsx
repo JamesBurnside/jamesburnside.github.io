@@ -1,9 +1,6 @@
 import { FormControlLabel, FormGroup, Stack, Switch } from "@mui/material";
 import { useState } from "react";
-import { drawResults, getModal, runDetector } from "../utils/videoEffectsHelpers";
-
-const VIDEO_ELEMENT_ID = "video-feed";
-const CANVAS_ELEMENT_ID = "video-effects-canvas";
+import { CANVAS_ELEMENT_ID, startVideoEffects, startVideoFeed, stopVideoEffects, stopVideoFeed, VIDEO_ELEMENT_ID } from "../utils/videoEffectsHelpers";
 
 export const ExampleVideoEffectsInner = () => {
   const [cameraOn, setCameraOn] = useState<boolean | "readying">(false);
@@ -31,108 +28,54 @@ export const ExampleVideoEffectsInner = () => {
   };
 
   return (
-    <Stack>
-      <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              onClick={() => toggleCamera(!cameraOn)}
-              checked={cameraOn === true}
-              disabled={cameraOn === "readying"}
-            />
-          }
-          label="Toggle Camera"
+    <Stack spacing={2} sx={{ width: '100%', maxWidth: '400px', margin: 'auto' }}>
+      <Stack>
+        <video
+          id={VIDEO_ELEMENT_ID}
+          height={300}
+          autoPlay
+          style={{ display: effectsOn === true ? "none" : undefined }}
         />
-        <FormControlLabel
-          control={
-            <Switch
-              onClick={() => toggleEffects(!effectsOn)}
-              checked={effectsOn === true}
-              disabled={cameraOn !== true || effectsOn === "readying"}
-              title="Toggle Effects"
-            />
-          }
-          label="Toggle Effects"
+        <canvas
+          id={CANVAS_ELEMENT_ID}
+          style={{ display: effectsOn !== true ? "none" : undefined }}
         />
-      </FormGroup>
-      <video
-        id={VIDEO_ELEMENT_ID}
-        height="300"
-        autoPlay
-        style={{ display: effectsOn === true ? "none" : undefined }}
-      />
-      <canvas
-        id={CANVAS_ELEMENT_ID}
-        height="300"
-        style={{ display: effectsOn !== true ? "none" : undefined }}
-      />
+      </Stack>
+      <Toggles cameraOn={cameraOn} effectsOn={effectsOn} toggleCamera={toggleCamera} toggleEffects={toggleEffects} />
     </Stack>
   );
 };
 
-const startVideoFeed = async (): Promise<void> => {
-  const videoFeed = await getVideoFeed();
-  if (!videoFeed) {
-    console.error("Could not get video feed!");
-    return;
-  }
+const Toggles = (props: {
+  toggleCamera: (newState: boolean) => void,
+  cameraOn: boolean | 'readying',
+  toggleEffects: (newState: boolean) => void,
+  effectsOn: boolean | 'readying'
+}):JSX.Element => {
+  return (
+    <FormGroup row sx={{ justifyContent: 'center'}}>
+      <FormControlLabel
+        control={
+          <Switch
+            onClick={() => props.toggleCamera(!props.cameraOn)}
+            checked={props.cameraOn === true}
+            disabled={props.cameraOn === "readying"}
+          />
+        }
+        label="Toggle Camera"
+      />
+      <FormControlLabel
+        control={
+          <Switch
+            onClick={() => props.toggleEffects(!props.effectsOn)}
+            checked={props.effectsOn === true}
+            disabled={props.cameraOn !== true || props.effectsOn === "readying"}
+            title="Toggle Effects"
+          />
+        }
+        label="Toggle Effects"
+      />
+    </FormGroup>
+  )
+}
 
-  const videoElement = document.getElementById(
-    VIDEO_ELEMENT_ID
-  ) as HTMLVideoElement;
-  videoElement.srcObject = videoFeed;
-  try {
-    await videoElement.play();
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-const stopVideoFeed = async (): Promise<void> => {
-  const videoElement = document.getElementById(
-    VIDEO_ELEMENT_ID
-  ) as HTMLVideoElement;
-  if (!videoElement.srcObject) {
-    return;
-  }
-
-  const videoFeed = videoElement.srcObject as MediaStream;
-  videoFeed.getTracks().forEach((track) => track.stop());
-  videoElement.srcObject = null;
-};
-
-const getVideoFeed = async (): Promise<MediaStream | undefined> => {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    return stream;
-  } catch (error) {
-    console.error(error);
-    alert(
-      "Could not get camera feed! Ensure you have allowed camera access and that your camera is not in use by another application."
-    );
-  }
-};
-
-const startVideoEffects = async (): Promise<void> => {
-  const videoElement = document.getElementById(VIDEO_ELEMENT_ID) as HTMLVideoElement;
-  const canvas = document.getElementById(
-    CANVAS_ELEMENT_ID
-  ) as HTMLCanvasElement;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) {
-    throw new Error("Could not get canvas context!");
-  }
-
-  return new Promise(resolve => {
-    const faceMesh = getModal();
-    faceMesh.onResults(async (results) => {
-      canvas.width = results.image.width;
-      canvas.height = results.image.height;
-      drawResults(ctx, results, { partyGlasses: true });
-      resolve();
-    });
-    runDetector(faceMesh, videoElement);
-  });
-};
-
-const stopVideoEffects = async (): Promise<void> => {};

@@ -1,3 +1,4 @@
+import Skeleton from "@mui/material/Skeleton";
 import dynamic from "next/dynamic";
 
 export const ExampleVideoEffects = () => {
@@ -9,6 +10,6 @@ export const ExampleVideoEffects = () => {
 const DynamicExampleVideoEffects = dynamic(
   () => import("./ExampleVideoEffectsInner").then((mod) => mod.ExampleVideoEffectsInner), {
     ssr: false,
-    loading: () => <>Loading...</>
+    loading: () => <Skeleton variant="rectangular" width={530} height={300} />
   }
 );

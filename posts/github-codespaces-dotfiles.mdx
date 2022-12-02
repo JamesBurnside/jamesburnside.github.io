@@ -1,0 +1,33 @@
+---
+title: Have GitHub Codespaces automatically add a gitconfig
+abstract: Make newly created codespaces automatically apply a custom gitconfig.
+dateCreated: 2022-09-21T09:00:00.000Z
+dateModified: 2022-09-21T09:00:00.000Z
+previewImageLink: images/programmer-focused-on-code.jpg
+published: true
+tags: [git, devops, codespaces, GitHub]
+---
+
+# Make GitHub Codespaces automatically pick up a custom gitconfig
+
+Have you ever created a new codespace and found it frustrating that your git aliases no longer work?
+I have, and turns out it is incredibly easy to get codespaces to pick up a custom gitconfig automatically! (Just undocumented on [GitHub's documentation](https://docs.github.com/en/codespaces/customizing-your-codespace/personalizing-github-codespaces-for-your-account#dotfiles) 🤷)
+
+## GitHub Codespaces and dotfiles
+
+GitHub codespaces supports setting up [dotfiles](https://docs.github.com/en/codespaces/customizing-your-codespace/personalizing-github-codespaces-for-your-account).
+Dotfiles are scripts and configs that are automatically copied into your codespace when it is created. This is a great way to set up your environment to your liking.
+
+To set this up, first create a repo to house your dotfiles (example: [JamesBurnside/dotfiles](JamesBurnside/dotfiles)).
+Then, to point GitHub to pull these when it creates new codespaces, set this repo as your dotfiles repo under [settings > codespaces](https://github.com/settings/codespaces):
+
+[![Setting dotfile repo in GitHub Codespaces settings menu](/images/setting-dotfiles.png)](/images/setting-dotfiles.png)
+
+As of writing this _does not update existing codespaces_, it only applies to newly created codespaces.
+
+## Adding gitconfig to your dotfiles
+
+There is nothing special about gitconfig, it is just a file that is read by git when it is run.
+All you need to do is add a file called `.gitconfig` to your dotfiles repo, and it will be copied into your codespaces when they are created!
+
+See [JamesBurnside/dotfiles](JamesBurnside/dotfiles) for an example of how my dotfiles repo is set up.
